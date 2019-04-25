@@ -11,8 +11,14 @@ int main() {
     printf("f) Substitution Dectryption Without Key\n");
     printf("Selection: ");
     
-    char a;
-    scanf("%a", &a);
+    char selection;
+    scanf("%c", &selection);
+    do {
+        
+        // block of code that calls above functions
+        // switch case - call different function for each option...
+        
+    } while(selection < 'a' || selection > 'f')
     
   /*  
     FILE *input;
