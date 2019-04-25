@@ -7,12 +7,14 @@ int main() {
     printf("b) Rotation Decryption\n");
     printf("c) Substitution Encryption\n");
     printf("d) Substitution Dectryption\n");
-    printf("Selection: ")
+    printf("e) Substitution Encryption Without Key\n");
+    printf("f) Substitution Dectryption Without Key\n");
+    printf("Selection: ");
     
     char a;
     scanf("%a", &a);
     
-    
+  /*  
     FILE *input;
     char c;
     input = fopen("input.txt", "r");
@@ -21,5 +23,7 @@ int main() {
         fscanf(input, "%c", &c);
         printf("%c\n", c);
     }
+    */
+   
  return 0;   
 }
