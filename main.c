@@ -38,7 +38,7 @@ is used because it allows strings to be stored in arrays.
 */
        if(selection == 97){ // the condition uses the ascii code for 'a', which = 97
            char input[] = "LCOKG"; // Code that will be decrypted. An array is used to that we can process multiple variables or letters
-           int n = 6; // This is the length of the string, since it finishes with an unseen 0. This is required to act as a limit in the condition of the for loop below. 
+           int n = 5; // This is the length of the string, since it finishes with an unseen 0. This is required to act as a limit in the condition of the for loop below. 
            int counter; // Acts as index for the array. It is increased each time the for loop goes through, meaning each letter is decrypted.
            int key = -2; // The is how much the input code will be rotated. Can be changed based on the input code.
            for(counter = 0; counter<n; counter++){ // for loop is required so that each letter can be decrypted individually.
@@ -66,7 +66,7 @@ letter is pushed forward 2 spots in the alphabet, printing 'JAMIE'.
 */
         else if(selection == 98){ // Menu selection for 'b'. Ascii code = 98.
             char input[] = "JAMIE"; // input message initialised as an array to allow for multiple variables
-            int n = 6; // This is the length of the string, since it finishes with an unseen 0. This is required to act as a limit in the condition of the for loop below.
+            int n = 5; // This is the length of the string, since it finishes with an unseen 0. This is required to act as a limit in the condition of the for loop below.
             int counter; // will be used as an index for the array, allowing each individual letter to be encrypted one by one as the loop increments.
             int key = 2; // Positive key will reverse the previous decryption.
             for(counter = 0; counter<n; counter++){ // for loop increments through each letter of the array using the index 'counter'.
@@ -97,7 +97,7 @@ substitution, this will spell 'JAMIE'.
             char messageletter[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // The regular alphabet for the input message
             char substitutionletter[] = "QWERTYUIOPASDFGHJKLZXCVBNM"; // The substitution alphabet. 'Q' substitutes for 'A' etc.
             char input[] = "PQDOT"; // Input message initialised as array due to multiple variables.
-            int n = 6; // length of array. Required for the condition of the for loop.
+            int n = 5; // length of array. Required for the condition of the for loop.
             int index = 0; // index for the input, initialised to 0 since arrays begin from 0.
             int counter = 0; // index for the alphabets. Initialised to zero so it begins at the first letter.
             
@@ -124,7 +124,7 @@ substitution, this will spell 'PQDOT'.
             char messageletter[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // normal alphabet that will be encrypted.
             char substitutionletter[] = "QWERTYUIOPASDFGHJKLZXCVBNM"; // substitution alphabet that replaces regular alphabet.
             char input[] = "JAMIE"; // Input message initialised in an array
-            int n = 6; // Length of string, variable required for while loop condition
+            int n = 5; // Length of string, variable required for while loop condition
             int index = 0; // Index for the input, initialised to zero since arrays begin from 0
             int counter = 0; // Index for the alphabets. Initialised to zero so it begins at the first letter.
              
