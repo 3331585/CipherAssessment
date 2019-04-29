@@ -6,9 +6,8 @@ There are two different methods, rotation or substitution, which can
 be selected by following the menu and entering a, b, c or d. The code will
 then run the desired encryption or decryption according to the do while loop,
 which runs based off the ascii value of the selected user input. The message 
-to be encrypted or decrypted and the key are hard coded in each section. This 
-code is designed to work with capital letters.To run the code, the user can 
-use the terminal to make selections and see results.
+to be encrypted or decrypted will be written into the input.txt file. This 
+code is designed to work with capital letters.
 */
 
 int main() {
@@ -23,135 +22,152 @@ like to select. The printf statements prompt the user and offer choices.
     printf("b) Rotation Encryption\n");
     printf("c) Substitution Decryption\n");
     printf("d) Substitution Enctryption\n");
-    printf("e) Substitution Decryption Without Key\n");
-    printf("f) Substitution Encryption Without Key\n");
     printf("Selection: "); // another prompt for user, provides space to enter selection
     
-    char selection; 
+    char selection; // new variable called 'selection'
     scanf("%c", &selection); // the users input is stored in the variable 'selection'
   
     do{
-/* Bellow is selection 'a', rotation decryption. The input has been hard coded
-to 'LCOKG' and the key is -2. This means each letter is pushed back 2 spots in 
-the alphabet, the decryption printing 'JAMIE'. Note that the char data type
-is used because it allows strings to be stored in arrays. 
+/* 
+Bellow is selection 'a', rotation decryption. The key should be written on the first line of the input.txt
+file, and the message on the line below that. The key should be a number, positive or negative, and the message
+should be in capital letters. 
 */
-       if(selection == 97){ // the condition uses the ascii code for 'a', which = 97
-           char input[] = "LCOKG"; // Code that will be decrypted. An array is used to that we can process multiple variables or letters
-           int n = 5; // This is the length of the string, since it finishes with an unseen 0. This is required to act as a limit in the condition of the for loop below. 
-           int counter; // Acts as index for the array. It is increased each time the for loop goes through, meaning each letter is decrypted.
-           int key = -2; // The is how much the input code will be rotated. Can be changed based on the input code.
-           for(counter = 0; counter<n; counter++){ // for loop is required so that each letter can be decrypted individually.
-               input[counter]= (input[counter] + key); // assigning the new value to the input after being altered by the key.
-/*
-The if and else conditions below are based of the ascii values of the input.
-It allows the letters like A and Z to wrap back around the other side of the alphabet
-instead of being converted into random values on either side of the alphabet.
-*/
-               if(input[counter]>90){ // incase the decryption goes past Z
-                   printf("%c", input[counter]-26);
-               }
-               else if(input[counter]<65){ //incase the decryption goes before A
-                   printf("%c", input[counter]+26);
-               }
-               else { //If neither of the above, just print the input letter + key
-                   printf("%c", input[counter]);
-               } 
-           }
-       }
+        if(selection == 97){ // the condition uses the ascii code for 'a', which = 97.
+            FILE *input; //declares input file that message will be read from.
+            FILE *output; // declares output file that message will be written to.
+            output = fopen("output.txt", "w"); //This opens the output file. 'w' is the mode that allows the code to write the decrypted message in this file.
+            input = fopen("input.txt", "r"); // This opens the input file.'r' is the mode that allows the code to read from the file.
+            char c; // variable that message will be stored in.
+            int key; // variable that the key will be stored in.
+            int message;//variable that decrypted message is stored in.
+            fscanf(input, "%d\n", &key); //code reads the number(hence %d) that the user typed and stores it in variable 'key'
+            
+            while(feof(input) == 0){ //this loop controls how long the code reads from the file. Reaching the end of text = 0, and will quite the loop.
+                fscanf(input, "%c", &c); // fscanf reads from input file and stores the message typed in input.txt in variable 'input'. Use %c to read individual characters and & for 'address of c'
+                message = c + key; // Equation that impliments decryption. Message becomes user input + rotation amount.
+                if(c == 32){ // Ascii code for whitespace is 32.
+                    printf("%c", c); // if the imput is white space, don't alter it.
+                    fprintf(output, "%c", c); // fprintf prints to the output file.
+                }
+                else if(message<65){ // if ascii value of rotated variable is before the alphabet, add 26 to loop it back around.
+                    printf("%c", message + 26);
+                    fprintf(output, "%c", message + 26);
+                }
+                else if(message>90){ // if ascii value of rotated variable is after the alphabet, subtract 26 to loop it back around. 
+                    printf("%c", message -26);
+                    fprintf(output, "%c", message -26);
+                }
+                else { // if it falls within the alphabet, simply print the message letter.
+                    printf("%c", message);
+                    fprintf(output, "%c", message);
+                }  
+                 
+            }
+        }
 /* 
 Bellow is selection 'b', rotation encryption. It is the reverse of the
-previous code block, as the input is 'LCOKG' and the key is 2. This means each 
-letter is pushed forward 2 spots in the alphabet, printing 'JAMIE'.
+previous code block, meaning if you change the sign of the previous key and input the decrypted message from
+above, it will encrypt it back to the original cipher. The key can be a positive or negative number, and the 
+message should be capital letters. Arrangement or these are the same as before. 
 */
         else if(selection == 98){ // Menu selection for 'b'. Ascii code = 98.
-            char input[] = "JAMIE"; // input message initialised as an array to allow for multiple variables
-            int n = 5; // This is the length of the string, since it finishes with an unseen 0. This is required to act as a limit in the condition of the for loop below.
-            int counter; // will be used as an index for the array, allowing each individual letter to be encrypted one by one as the loop increments.
-            int key = 2; // Positive key will reverse the previous decryption.
-            for(counter = 0; counter<n; counter++){ // for loop increments through each letter of the array using the index 'counter'.
-                input[counter]= (input[counter] + key); //assigning the input letter a new value by adding the key of 2
-//The below code is used to for same reason stated in the rotation decryption section above. 
-                if(input[counter]>90){
-                    printf("%c", input[counter]-26);
+            FILE *input;//declares input file that message will be read from.
+            FILE *output;// declares output file that message will be written to.
+            input = fopen("input.txt", "r");// This opens the input file.'r' is the mode that allows the code to read from the file.
+            output = fopen("output.txt", "w");//This opens the output file. 'w' is the mode that allows the code to write the decrypted message in this file.
+            char c;//variable that message will be stored in.
+            int key;//variable that key will be stored in.
+            int message; //variable that encrypted message is stored in.
+            fscanf(input, "%d\n", &key);//code reads the number(hence %d) that the user typed and stores it in variable 'key'
+            
+            while(feof(input) == 0){//this loop controls how long the code reads from the file. Reaching the end of text = 0, and will quite the loop.
+                fscanf(input, "%c", &c); // fscanf reads from input file and stores the message typed in input.txt in variable 'c'. Use %c to read individual characters and & for 'address of c'
+                message = c + key;// Equation that impliments decryption. Message becomes user input + rotation amount.
+                if(c == 32){// Ascii code for whitespace is 32.
+                    printf("%c", c);// if the imput is white space, don't alter it.
+                    fprintf(output, "%c", c);// fprintf prints to the output file.
                 }
-                else if(input[counter]<65){
-                    printf("%c", input[counter]+26);
+                else if(message<65){// if ascii value of rotated variable is before the alphabet, add 26 to loop it back around.
+                    printf("%c", message + 26);
+                    fprintf(output, "%c", message + 26);
                 }
-                else {
-                    printf("%c", input[counter]);
-                }    
+                else if(message>90){// if ascii value of rotated variable is after the alphabet, subtract 26 to loop it back around. 
+                    printf("%c", message -26);
+                    fprintf(output, "%c", message -26);
+                }
+                else {// if it falls within the alphabet, simply print the message letter.
+                    printf("%c", message);
+                    fprintf(output, "%c", message);
+                }  
+                 
             }
         }
 /*
-Below is selection 'c', substitution decryption. It works by using three 
-different arrays, the input, the normal alphabet, and the substitution 
+Below is selection 'c', substitution decryption. It works by using two 
+different arrays, the normal alphabet, and the substitution 
 alphabet. A for loop runs until the ascii value of the first input letter
 matches one from the substitution alphabet. The index of this letter in the alphabet is 
 then matched to the opposing index in the regular alphabet, and this
-letter takes its place. The input is 'PQDOT', and using the 'QWERTY' 
+letter takes its place. For example, if the input is 'PQDOT', using the 'QWERTY' 
 substitution, this will spell 'JAMIE'.
-
- */
+*/
         else if(selection == 99){ // Menu selection 'c'. Ascii code = 99
-            char messageletter[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // The regular alphabet for the input message
-            char substitutionletter[] = "QWERTYUIOPASDFGHJKLZXCVBNM"; // The substitution alphabet. 'Q' substitutes for 'A' etc.
-            char input[] = "PQDOT"; // Input message initialised as array due to multiple variables.
-            int n = 5; // length of array. Required for the condition of the for loop.
-            int index = 0; // index for the input, initialised to 0 since arrays begin from 0.
-            int counter = 0; // index for the alphabets. Initialised to zero so it begins at the first letter.
-            
-            while (index <= n){ // loop makes code quit after all letters are decrypted. 
-                for (counter = 0; counter < 25; counter ++){ // counter stops at 25 because it reaches the end of the alphabet, since it begins at 0. 
-                    if (input[index] == substitutionletter[counter]){ // compares input letter to substitution alphabet letter. 
-                        printf("%c", messageletter[counter]); //If they're equal, prints corresponding message letter.
-                    } // If they aren't equal, loop runs again and the counter goes to the next letter in the alphabet.
+            FILE *input; //declares input file that message will be read from.
+            FILE *output;// declares output file that message will be written to.
+            input = fopen("input.txt", "r");// This opens the input file.'r' is the mode that allows the code to read from the file.
+            output = fopen("output.txt", "w");//This opens the output file. 'w' is the mode that allows the code to write the decrypted message in this file.
+            char c;//variable that message will be stored in.
+            char messageletter[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // char is used so that the string can be stored in an array.
+            char substitutionletter[] = "QWERTYUIOPASDFGHJKLZXCVBNM"; // char is used so that the string can be stored in an array.
+            int counter = 0;//counter is used to compare different letters between the two alphabets. Initialised to 0 to start from the first letter.
+                    
+            while (feof(input) == 0){ //this loop controls how long the code reads from the file. Reaching the end of text = 0, and will quite the loop.
+                while(feof(input) == 0){
+                fscanf(input, "%c", &c);// fscanf reads from input file and stores the message typed in input.txt in variable 'c'. Use %c to read individual characters and & for 'address of c'
+                    for (counter = 0; counter < 25; counter ++){// <25 because it reaches the end of the alphabet.
+                        if (c == substitutionletter[counter]){//for loop runs until the ascii values of c and substitutionletter match
+                            printf("%c", messageletter[counter]); //when they match, print the corresponding message letter
+                            fprintf(output, "%c", messageletter[counter]);//print to output.txt as well. %c because it processes individual characters
+                        } 
+                    }
                 }
-                index ++; // Index goes to next input letter once the first letter has been decrypted.
             }
         
         }
 /*
-Below is selection 'd', substitution encryption. It works by using three 
-different arrays, the input, the normal alphabet, and the substitution 
-alphabet. A for loop runs until the ascii value of the first input letter
+Below is selection 'd', substitution encryption. It works by using 2 
+different arrays, the normal alphabet, and the substitution alphabet. 
+A for loop runs until the ascii value of the first input letter
 matches one from the alphabet. The index of this letter in the alphabet is 
 then matched to the opposing index in the substitution alphabet, and this
-letter takes its place. The input is 'JAMIE', and using the 'QWERTY' 
-substitution, this will spell 'PQDOT'.
+letter takes its place. If the input is 'JAMIE', using the 'QWERTY' 
+substitution, this will spell 'PQDOT', which is the input for the previous decryption.
  */
-        else if(selection == 100){ // Menu selection 'd', ascii value = 100.
-            char messageletter[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // normal alphabet that will be encrypted.
-            char substitutionletter[] = "QWERTYUIOPASDFGHJKLZXCVBNM"; // substitution alphabet that replaces regular alphabet.
-            char input[] = "JAMIE"; // Input message initialised in an array
-            int n = 5; // Length of string, variable required for while loop condition
-            int index = 0; // Index for the input, initialised to zero since arrays begin from 0
-            int counter = 0; // Index for the alphabets. Initialised to zero so it begins at the first letter.
-             
-            while (index <= n){ // While loop makes the code quit once all letters have been encrypted. 
-                for (counter = 0; counter < 25; counter ++){ // counter stops at 25 because it reaches the end of the alphabet, since it starts at 0
-                    if (input[index] == messageletter[counter]){ // compares input letter to alphabet letter
-                        printf("%c", substitutionletter[counter]); // If they're equal, prints corresponding substitution letter. 
+        else if (selection == 100){ // Menu selection 'd', ascii value = 100.
+            FILE *input;//declares input file that message will be read from.
+            FILE *output;// declares output file that message will be written to.
+            input = fopen("input.txt", "r");// This opens the input file.'r' is the mode that allows the code to read from the file.
+            output = fopen("output.txt", "w"); //This opens the output file. 'w' is the mode that allows the code to write the decrypted message in this file.
+            char c;//variable that message will be stored in.
+            char messageletter[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // char is used so that the string can be stored in an array.
+            char substitutionletter[] = "QWERTYUIOPASDFGHJKLZXCVBNM"; // char is used so that the string can be stored in an array.
+            int counter = 0; //counter is used to compare different letters between the two alphabets. Initialised to 0 to start from the first letter.
+                    
+            while (feof(input) == 0){ //this loop controls how long the code reads from the file. Reaching the end of text = 0, and will quite the loop.
+                while(feof(input) == 0){
+                fscanf(input, "%c", &c);// fscanf reads from input file and stores the message typed in input.txt in variable 'c'. Use %c to read individual characters, and & for 'address of c'
+                    for (counter = 0; counter < 25; counter ++){ // <25 because it reaches the end of the alphabet.
+                        if (c == messageletter[counter]){ //for loop runs until the ascii values of c and substitutionletter match
+                            printf("%c", substitutionletter[counter]);//when they match, print the corresponding message letter. %c because it processes individual characters
+                            fprintf(output, "%c", substitutionletter[counter]);//print to output.txt as well. %c because it processes individual characters
+                        } 
                     }
-                } // If they're not equal, loop repeats and checks the next alphabet letter.
-                index ++; // Input index goes to next letter once first letter has been decrypted.
+                }
             }
         }
 
-   }while(selection < 'a' || selection > 'd'); // condition tested after the code runs once, to make sure the letter selected was one of the options. 
- 
+   } while(selection < 'a' || selection > 'd'); // condition tested after the code runs once, to make sure the letter selected was one of the options. 
    
-   /*
-    
-    FILE *input;
-    char c;
-    input = fopen("input.txt", "r");
-    
-    while(feof(input) == 0){
-        fscanf(input, "%c", &c);
-        printf("%c\n", c);
-    }
-    */
-   
-    return 0;   
+    return 0;
 }
